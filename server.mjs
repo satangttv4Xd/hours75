@@ -39,7 +39,7 @@ if (!secret || secret.length < 32) {
   }
 }
 
-const origin = process.env.PUBLIC_ORIGIN || 'http://localhost:3000';
+const origin = process.env.PUBLIC_ORIGIN || process.env.APP_ORIGIN || process.env.ORIGIN || 'http://localhost:3000';
 const basePath = (process.env.BASE_PATH || '').replace(/\/$/, '');
 if (basePath && !/^\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/.test(basePath)) throw Error('BASE_PATH must be a path such as /75hour');
 const secure = origin.startsWith('https://');
