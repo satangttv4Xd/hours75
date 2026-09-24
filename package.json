@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24.0.0" },
-  "scripts": { "start": "node server.mjs", "check": "node --check server.mjs && node --check public/app.js", "test": "node --test" }
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check public/app.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "postgres": "^3.4.9"
+  }
 }

@@ -22,4 +22,8 @@ test('subpath serves assets and protects API',async()=>{
   const foreign=await fetch(origin+'/75hour/api/login',{method:'POST',headers:{origin:'https://unrelated.example','content-type':'application/json'},body:JSON.stringify({username:'admin',password:'this-is-a-long-test-password'})});assert.equal(foreign.status,403);
   const students=await fetch(origin+'/75hour/api/students',{headers:{cookie:login.headers.get('set-cookie').split(';')[0]}});assert.equal((await students.json()).students.length,15);
 });
-after(()=>{child.kill();fs.rmSync(temp,{recursive:true,force:true});});
+after(async()=>{
+  child.kill();
+  await new Promise(r=>{ child.on('exit',r); setTimeout(r,500); });
+  try { fs.rmSync(temp,{recursive:true,force:true}); } catch {}
+});

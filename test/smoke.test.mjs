@@ -41,4 +41,8 @@ test('admin creates accounts, students update only own shifts, reset invalidates
   assert.equal((await call('/api/me','GET',null,student)).status,401);
   assert.equal((await call(`/api/shifts?id=${saved.data.id}`,'DELETE',null,admin)).status,200);
 });
-after(()=>{child.kill();fs.rmSync(temp,{recursive:true,force:true});});
+after(async()=>{
+  child.kill();
+  await new Promise(r=>{ child.on('exit',r); setTimeout(r,500); });
+  try { fs.rmSync(temp,{recursive:true,force:true}); } catch {}
+});
