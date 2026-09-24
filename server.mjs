@@ -110,6 +110,7 @@ function sameOrigin(req) {
 }
 
 function cookieSecure(req) {
+  if (isVercel) return true;
   return (secure || req.headers['x-forwarded-proto'] === 'https') && !localBrowser(req);
 }
 
@@ -159,13 +160,23 @@ const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; ch
 export async function handler(req, res) {
   try {
     const db = await getDb();
-    const url = new URL(req.url, 'http://localhost');
-    if (basePath && url.pathname === basePath) {
+    const requestUrl = req.originalUrl || req.url;
+    const url = new URL(requestUrl, 'http://localhost');
+    let pathname = url.pathname;
+
+    if (url.searchParams.has('__api_path')) {
+      const p = url.searchParams.get('__api_path').split('?')[0];
+      pathname = `/api/${p}`;
+    } else if (req.headers['x-matched-path']) {
+      pathname = req.headers['x-matched-path'];
+    }
+
+    if (basePath && pathname === basePath) {
       res.writeHead(308, { location: `${basePath}/${url.search}` });
       return res.end();
     }
-    if (basePath && !url.pathname.startsWith(`${basePath}/`)) return fail(res, 404, 'ไม่พบหน้า');
-    const pathname = basePath ? url.pathname.slice(basePath.length) : url.pathname;
+    if (basePath && !pathname.startsWith(`${basePath}/`)) return fail(res, 404, 'ไม่พบหน้า');
+    pathname = basePath ? pathname.slice(basePath.length) : pathname;
 
     if (pathname === '/api/login' && req.method === 'POST') {
       if (!sameOrigin(req)) return fail(res, 403, 'คำขอไม่ได้มาจากเว็บไซต์นี้');

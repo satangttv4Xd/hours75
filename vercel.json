@@ -1,6 +1,6 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index.mjs" }
+    { "source": "/api/(.*)", "destination": "/api/index.mjs?__api_path=$1" }
   ]
 }
