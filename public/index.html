@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ระบบปฏิบัติงาน 75 ชั่วโมง — Octo Code</title>
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230D1117' stroke='%2330363D' stroke-width='3'/%3E%3Crect x='8' y='8' width='48' height='48' rx='8' fill='%23161B22'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='monospace' font-size='26' font-weight='600' fill='%232F81F7'%3E75%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <div class="shell header">
+            <div class="brand">
+                <div class="mark">75</div>
+                <div class="brand-text">
+                    <div class="title-row">
+                        <h1>ระบบปฏิบัติงาน 75 ชั่วโมง</h1>
+                        <span class="chip chip-topic">v4.0</span>
+                    </div>
+                    <p>ตารางปฏิบัติงานรายเดือน · DUSIT</p>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button id="themeToggle" type="button" title="สลับธีม">
+                    <svg class="icon-moon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M9.598 1.591a.75.75 0 0 1 .785-.175 7 7 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.5 5.5 0 1 0 7.678-7.678Z" />
+                    </svg>
+                    <svg class="icon-sun" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0Zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06Zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM0 8a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8Zm13 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 13 8ZM2.343 13.657a.75.75 0 0 1 0-1.06l1.06-1.061a.75.75 0 1 1 1.061 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Zm9.193-9.193a.75.75 0 0 1 0-1.06l1.061-1.061a.75.75 0 1 1 1.06 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Z" />
+                    </svg>
+                </button>
+                <button id="changePassword" class="quiet hidden" type="button">เปลี่ยนรหัสผ่าน</button>
+                <button id="logout" class="quiet hidden" type="button">ออกจากระบบ</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="shell">
+        <!-- Login Panel -->
+        <section id="loginPanel" class="auth-panel">
+            <div class="auth-header">
+                <div class="mark auth-mark">75</div>
+                <h2>เข้าสู่ระบบ</h2>
+            </div>
+            <div class="auth-card card">
+                <form id="loginForm">
+                    <label>
+                        ชื่อบัญชี
+                        <input id="username" autocomplete="username" placeholder="admin หรือ รหัสนักศึกษา" required>
+                    </label>
+                    <label>
+                        รหัสผ่าน
+                        <input id="password" type="password" autocomplete="current-password" placeholder="••••••••••••"
+                            required>
+                    </label>
+                    <button type="submit" class="auth-submit">เข้าสู่ระบบ</button>
+                </form>
+            </div>
+            <div class="auth-footer">
+                <p>ผู้ดูแลใช้ชื่อบัญชี <strong>admin</strong> · นักศึกษาใช้ <strong>รหัสนักศึกษา</strong></p>
+            </div>
+        </section>
+
+        <!-- Change Password Panel -->
+        <section id="changePanel" class="auth-panel hidden">
+            <div class="auth-header">
+                <div class="mark auth-mark">75</div>
+                <h2>เปลี่ยนรหัสผ่าน</h2>
+            </div>
+            <div class="auth-card card">
+                <form id="changeForm">
+                    <label>
+                        รหัสผ่านเดิม
+                        <input id="currentPassword" type="password" autocomplete="current-password"
+                            placeholder="••••••••••••" required>
+                    </label>
+                    <label>
+                        รหัสผ่านใหม่ <span class="text-mute">(อย่างน้อย 12 ตัวอักษร)</span>
+                        <input id="newPassword" type="password" autocomplete="new-password" minlength="12"
+                            placeholder="••••••••••••" required>
+                    </label>
+                    <button type="submit" class="auth-submit">เปลี่ยนรหัสผ่าน</button>
+                    <button id="cancelChange" class="quiet hidden auth-cancel" type="button">กลับไปตารางงาน</button>
+                </form>
+            </div>
+            <div class="auth-footer">
+                <p>ตั้งรหัสผ่านใหม่และเก็บไว้เป็นความลับ</p>
+            </div>
+        </section>
+
+        <!-- Workspace -->
+        <div id="workspace" class="hidden">
+            <!-- Admin Overview Dashboard -->
+            <section id="adminDashboard" class="card dashboard hidden">
+                <div class="recordsHead">
+                    <div class="dashboardTitleGroup">
+                        <h2>ภาพรวมทุกคน</h2>
+                        <span class="chip chip-label">Admin Console</span>
+                    </div>
+                    <span id="dashboardTotal" class="chip chip-pill"></span>
+                </div>
+                <div class="dashboardHelp">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="help-icon">
+                        <path
+                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
+                    </svg>
+                    <span>สร้างบัญชีหรือออกรหัสใหม่ แล้วส่งรหัสเริ่มต้นให้นักศึกษาแต่ละคนเป็นการส่วนตัว
+                        รหัสนี้จะแสดงครั้งเดียว</span>
+                </div>
+                <div class="tablewrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>นักศึกษา</th>
+                                <th>หน่วยงาน</th>
+                                <th>เดือนที่เลือก</th>
+                                <th>สะสม</th>
+                                <th>บัญชี</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboardRows"></tbody>
+                    </table>
+                </div>
+                <p id="credential" class="credential hidden" role="status"></p>
+            </section>
+
+            <!-- Filters & Metrics -->
+            <section class="filters card">
+                <label>
+                    นักศึกษา
+                    <select id="student"></select>
+                </label>
+                <label>
+                    เดือนที่แสดง
+                    <input id="month" type="month" required>
+                </label>
+                <div class="metric">
+                    <small>ชั่วโมงในเดือนนี้</small>
+                    <strong id="monthHours">0 ชม.</strong>
+                </div>
+                <div class="metric">
+                    <small>ชั่วโมงสะสมทั้งหมด</small>
+                    <strong id="allHours">0 / 75 ชม.</strong>
+                </div>
+            </section>
+
+            <!-- Active Person Meta Banner -->
+            <div class="person-bar">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path
+                        d="M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99 0 .75.75 0 0 1-1.498-.07 6.004 6.004 0 0 1 3.431-5.142 3.999 3.999 0 1 1 5.123 0ZM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z" />
+                </svg>
+                <p id="person" class="person"></p>
+            </div>
+
+            <!-- Main Columns: Form & Records -->
+            <div class="columns">
+                <form id="shiftForm" class="card form">
+                    <h2>เพิ่มวันปฏิบัติงาน</h2>
+                    <label>
+                        วันที่
+                        <input id="date" type="date" required>
+                    </label>
+                    <div class="two">
+                        <label>
+                            เริ่ม
+                            <input id="start" type="time" value="09:00" required>
+                        </label>
+                        <label>
+                            สิ้นสุด
+                            <input id="end" type="time" value="16:00" required>
+                        </label>
+                    </div>
+                    <label>
+                        เวลาพัก (นาที)
+                        <input id="break" type="number" min="0" max="1439" value="60" required>
+                    </label>
+                    <label>
+                        รายละเอียดงาน
+                        <textarea id="note" maxlength="300"
+                            placeholder="เช่น จัดเอกสาร รับเรื่อง บันทึกข้อมูล"></textarea>
+                    </label>
+                    <div class="formActions">
+                        <button id="saveShift" type="submit">บันทึกตารางงาน</button>
+                        <button id="cancelEdit" type="button" class="quiet hidden">ยกเลิกแก้ไข</button>
+                    </div>
+                </form>
+
+                <section class="card records">
+                    <div class="recordsHead">
+                        <h2>รายการปฏิบัติงาน</h2>
+                        <span id="count" class="chip chip-pill">0 รายการ</span>
+                    </div>
+                    <div class="tablewrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>วันที่</th>
+                                    <th>เวลา</th>
+                                    <th>พัก</th>
+                                    <th>ชั่วโมง</th>
+                                    <th>รายละเอียดงาน</th>
+                                    <th>จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rows"></tbody>
+                        </table>
+                    </div>
+                    <p id="empty" class="empty">ยังไม่มีรายการในเดือนนี้</p>
+                </section>
+            </div>
+        </div>
+
+        <!-- Notification Message -->
+        <p id="message" role="status" aria-live="polite"></p>
+    </main>
+</body>
+
+</html>

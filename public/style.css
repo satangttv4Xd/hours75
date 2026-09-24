@@ -1,0 +1,897 @@
+/* ══════════════════════════════════════════════════════════════════
+   Octo Code Design System — 75-Hour Work Log (ระบบปฏิบัติงาน 75 ชม.)
+   Developer-centric · Dark-mode-first · Color-layered · Inter + JetBrains Mono
+   Strictly adheres to DESIGN.md specification
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Typography Imports ───────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── Design Tokens: Dark Theme (Default) ───────────────────────── */
+:root {
+  /* Core Colors */
+  --primary: #2F81F7;
+  --primary-hover: #388BFD;
+  --secondary: #238636;
+  --secondary-hover: #2ea043;
+  --secondary-active: #29903b;
+  --neutral: #8B949E;
+  --bg: #0D1117;
+  --surface: #161B22;
+  --surface-hover: #1C2128;
+  --surface-overlay: #21262D;
+  --text-primary: #E6EDF3;
+  --text-secondary: #8B949E;
+  --border: #30363D;
+  --border-hover: #484F58;
+  --border-subtle: #21262D;
+  --success: #3FB950;
+  --warning: #D29922;
+  --error: #F85149;
+  --accent-orange: #F78166;
+  --link: #58A6FF;
+  --link-hover: #79c0ff;
+  --backdrop: rgba(1, 4, 9, 0.8);
+
+  /* Element Specific Tokens */
+  --header-bg: #161B22;
+  --header-border: #30363D;
+  --card-bg: #161B22;
+  --card-border: #30363D;
+  --card-border-hover: #484F58;
+  --input-bg: #0D1117;
+  --input-border: #30363D;
+  --input-placeholder: #484F58;
+  --chip-bg: #1C2128;
+  --chip-text: #58A6FF;
+  --chip-border: #30363D;
+  --chip-label-bg: rgba(63, 185, 80, 0.15);
+  --chip-label-text: #3FB950;
+  --chip-label-border: rgba(63, 185, 80, 0.3);
+  --table-head-bg: #161B22;
+  --table-row-hover: #1C2128;
+  --table-row-active-border: #F78166;
+  --credential-bg: rgba(210, 153, 34, 0.12);
+  --credential-border: rgba(210, 153, 34, 0.4);
+  --error-bg: rgba(248, 81, 73, 0.12);
+  --error-border: rgba(248, 81, 73, 0.4);
+  --quiet-bg: transparent;
+  --quiet-border: #30363D;
+  --quiet-text: #C9D1D9;
+  --quiet-hover-bg: #1C2128;
+  --quiet-hover-border: #484F58;
+  --quiet-hover-text: #E6EDF3;
+  --danger-text: #F85149;
+  --danger-hover-bg: rgba(248, 81, 73, 0.15);
+  --danger-border: rgba(248, 81, 73, 0.4);
+  --selection-bg: rgba(47, 129, 247, 0.3);
+  --scrollbar-track: #0D1117;
+  --scrollbar-thumb: #30363D;
+  --scrollbar-thumb-hover: #484F58;
+
+  /* Typography */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg);
+}
+
+/* ── Light Theme (Secondary) ──────────────────────────────────── */
+[data-theme="light"] {
+  --primary: #0969DA;
+  --primary-hover: #0550AE;
+  --secondary: #1F883D;
+  --secondary-hover: #1A7F37;
+  --secondary-active: #156d2e;
+  --neutral: #656D76;
+  --bg: #F6F8FA;
+  --surface: #FFFFFF;
+  --surface-hover: #F3F4F6;
+  --surface-overlay: #EAEEF2;
+  --text-primary: #1F2328;
+  --text-secondary: #656D76;
+  --border: #D0D7DE;
+  --border-hover: #AFB8C1;
+  --border-subtle: #E1E4E8;
+  --success: #1F883D;
+  --warning: #9A6700;
+  --error: #CF222E;
+  --accent-orange: #BC4C00;
+  --link: #0969DA;
+  --link-hover: #0550AE;
+  --backdrop: rgba(175, 184, 193, 0.4);
+
+  --header-bg: #FFFFFF;
+  --header-border: #D0D7DE;
+  --card-bg: #FFFFFF;
+  --card-border: #D0D7DE;
+  --card-border-hover: #AFB8C1;
+  --input-bg: #FFFFFF;
+  --input-border: #D0D7DE;
+  --input-placeholder: #8C959F;
+  --chip-bg: #EAEEF2;
+  --chip-text: #0969DA;
+  --chip-border: #D0D7DE;
+  --chip-label-bg: rgba(31, 136, 61, 0.12);
+  --chip-label-text: #1F883D;
+  --chip-label-border: rgba(31, 136, 61, 0.3);
+  --table-head-bg: #F6F8FA;
+  --table-row-hover: #F3F4F6;
+  --table-row-active-border: #BC4C00;
+  --credential-bg: rgba(154, 103, 0, 0.08);
+  --credential-border: rgba(154, 103, 0, 0.3);
+  --error-bg: rgba(207, 34, 46, 0.08);
+  --error-border: rgba(207, 34, 46, 0.3);
+  --quiet-bg: #F6F8FA;
+  --quiet-border: #D0D7DE;
+  --quiet-text: #24292F;
+  --quiet-hover-bg: #F3F4F6;
+  --quiet-hover-border: #AFB8C1;
+  --quiet-hover-text: #1F2328;
+  --danger-text: #CF222E;
+  --danger-hover-bg: rgba(207, 34, 46, 0.08);
+  --danger-border: rgba(207, 34, 46, 0.3);
+  --selection-bg: rgba(9, 105, 218, 0.2);
+  --scrollbar-track: #F6F8FA;
+  --scrollbar-thumb: #D0D7DE;
+  --scrollbar-thumb-hover: #AFB8C1;
+}
+
+/* ── Reset & Baseline ─────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Transitions: instantaneous engineered feel <= 150ms per DESIGN.md */
+body, header, .card, input, select, textarea, button, th, td, .chip {
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+/* ── Layout Shell ─────────────────────────────────────────────── */
+.shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+main.shell {
+  padding-top: 24px;
+  padding-bottom: 48px;
+}
+
+/* ── Top Navigation Header ────────────────────────────────────── */
+header {
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  box-shadow: 0 1px 0 rgba(27, 31, 36, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 64px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* Mark Logo: 12px radius, JetBrains Mono */
+.mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: -0.02em;
+  font-feature-settings: "liga" 1, "calt" 1;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h1 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.brand-text p {
+  margin: 2px 0 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* ── Chips / Pills (DESIGN.md: 24px height, 12px padding, 9999px radius) ── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chip-topic {
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  border: 1px solid var(--chip-border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+.chip-label {
+  background: var(--chip-label-bg);
+  color: var(--chip-label-text);
+  border: 1px solid var(--chip-label-border);
+}
+
+.chip-pill {
+  background: var(--surface-overlay);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+/* ── Theme Toggle Button ──────────────────────────────────────── */
+#themeToggle {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  flex: none;
+}
+
+#themeToggle:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+#themeToggle .icon-moon { display: block; }
+#themeToggle .icon-sun  { display: none; }
+[data-theme="light"] #themeToggle .icon-moon { display: none; }
+[data-theme="light"] #themeToggle .icon-sun  { display: block; }
+
+/* ── Card Container (DESIGN.md: #161B22, 1px #30363D, 6px radius, 16px pad) ── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.card:hover {
+  border-color: var(--card-border-hover);
+}
+
+.hidden {
+  display: none !important;
+}
+
+h2 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+/* ── Buttons (DESIGN.md: 6px radius, 32px default, 28px small) ─ */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--secondary);
+  color: #FFFFFF;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  border-radius: 6px;
+  padding: 5px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+  min-height: 32px;
+  white-space: nowrap;
+}
+
+button:hover {
+  background: var(--secondary-hover);
+}
+
+button:active {
+  background: var(--secondary-active);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Outline / Quiet Button (DESIGN.md: transparent bg, #30363D border, #C9D1D9 text) */
+.quiet,
+button.quiet {
+  background: var(--quiet-bg);
+  border: 1px solid var(--quiet-border);
+  color: var(--quiet-text);
+}
+
+.quiet:hover,
+button.quiet:hover {
+  background: var(--quiet-hover-bg);
+  border-color: var(--quiet-hover-border);
+  color: var(--quiet-hover-text);
+}
+
+/* Danger Button (DESIGN.md: transparent bg, #F85149 text, bordered) */
+.danger,
+button.danger {
+  background: transparent;
+  border: 1px solid var(--danger-border);
+  color: var(--danger-text);
+}
+
+.danger:hover,
+button.danger:hover {
+  background: var(--danger-hover-bg);
+}
+
+/* Inline Edit Link Button (GitHub branch/repo link style) */
+.edit,
+button.edit {
+  color: var(--link);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.edit:hover,
+button.edit:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* ── Form Inputs (DESIGN.md: #0D1117, 1px #30363D, 6px radius, 8px 12px) ── */
+label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+input, select, textarea {
+  width: 100%;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 14px;
+  min-height: 32px;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--input-placeholder);
+}
+
+/* Focus state: 2px solid #2F81F7 outline with 2px offset */
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-color: var(--primary);
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
+
+/* ── Auth Panels (Login & Password Change) ───────────────────── */
+.auth-panel {
+  max-width: 340px;
+  margin: 64px auto 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.auth-mark {
+  width: 48px;
+  height: 48px;
+  font-size: 22px;
+  border-radius: 12px;
+  margin: 0 auto;
+}
+
+.auth-header h2 {
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.auth-card {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  /* Layered elevation without heavy shadow theatrics */
+  box-shadow: 0 1px 0 rgba(27, 31, 36, 0.04);
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-submit {
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  height: 32px;
+}
+
+.auth-cancel {
+  width: 100%;
+  margin-top: -8px;
+  height: 32px;
+}
+
+/* Auth Callout Box */
+.auth-footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.auth-footer p {
+  margin: 0;
+}
+
+.auth-footer strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.text-mute {
+  font-weight: 400;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+/* ── Admin Dashboard ─────────────────────────────────────────── */
+.dashboard {
+  padding: 0;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.dashboardTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboardHelp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 13px;
+  border-left: 3px solid var(--primary);
+}
+
+.dashboardHelp .help-icon {
+  flex: none;
+  color: var(--link);
+}
+
+.dashboard .tablewrap {
+  max-height: 480px;
+  overflow: auto;
+}
+
+/* Dashboard Action Buttons inside table */
+#dashboardRows td button {
+  min-height: 28px;
+  padding: 3px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+#dashboardRows td button.edit {
+  color: var(--link);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 14px;
+  text-align: left;
+}
+
+#dashboardRows td button.edit:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* Credential Alert (Octo Code Warning Callout) */
+.credential {
+  margin: 16px;
+  background: var(--credential-bg);
+  border: 1px solid var(--credential-border);
+  border-left: 4px solid var(--warning);
+  color: var(--warning);
+  padding: 12px 16px;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-feature-settings: "liga" 1, "calt" 1;
+}
+
+/* ── Filters Section ─────────────────────────────────────────── */
+.filters {
+  display: grid;
+  grid-template-columns: minmax(260px, 2fr) minmax(180px, 1fr) auto auto;
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.metric {
+  background: var(--surface-overlay);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 16px;
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+.metric small {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.metric strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-feature-settings: "liga" 1, "calt" 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ── Person Status Bar (GitHub Repo Sub-header Style) ────────── */
+.person-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.person-bar svg {
+  flex: none;
+  color: var(--neutral);
+}
+
+.person-bar .person {
+  margin: 0;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* ── Columns Layout (Form & Records) ─────────────────────────── */
+.columns {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.formActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.formActions button:first-child {
+  flex: 1;
+}
+
+/* ── Records Table Section ───────────────────────────────────── */
+.records {
+  padding: 0;
+  overflow: hidden;
+}
+
+.recordsHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.tablewrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th, td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+th {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--table-head-bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+/* JetBrains Mono tabular figures for code-related columns */
+td:nth-child(1),
+td:nth-child(2),
+td:nth-child(3),
+td:nth-child(4) {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "liga" 1, "calt" 1;
+  white-space: nowrap;
+}
+
+tr:hover td {
+  background: var(--table-row-hover);
+}
+
+/* Table Actions: Edit & Delete buttons */
+.records td button {
+  min-height: 28px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.records td .edit {
+  background: var(--quiet-bg);
+  border: 1px solid var(--border);
+  color: var(--link);
+  margin-right: 6px;
+}
+
+.records td .edit:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  color: var(--link-hover);
+  text-decoration: none;
+}
+
+.records td .danger {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--danger-text);
+}
+
+.records td .danger:hover {
+  background: var(--danger-hover-bg);
+  border-color: var(--danger-border);
+}
+
+/* Blankslate / Empty State */
+.empty {
+  padding: 32px 16px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ── Flash Notification Banner (#message) ────────────────────── */
+#message:not(:empty) {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+#message.error {
+  background: var(--error-bg);
+  border-color: var(--error-border);
+  border-left: 4px solid var(--error);
+  color: var(--error);
+}
+
+/* ── Scrollbars & Selection ──────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--text-primary);
+}
+
+/* ── Responsive Adaptations ──────────────────────────────────── */
+@media (max-width: 1050px) {
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .shell {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  header {
+    height: auto;
+  }
+  .header {
+    height: auto;
+    min-height: 56px;
+    padding: 8px 0;
+    flex-wrap: wrap;
+  }
+  .filters {
+    grid-template-columns: 1fr;
+  }
+  .metric {
+    white-space: normal;
+  }
+  th, td {
+    padding: 8px 10px;
+  }
+  .auth-panel {
+    margin: 32px auto 16px;
+  }
+}

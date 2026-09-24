@@ -1,0 +1,44 @@
+import {test,after} from 'node:test';
+import assert from 'node:assert/strict';
+import {spawn} from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import net from 'node:net';
+const root=path.resolve(import.meta.dirname,'..');
+const temp=fs.mkdtempSync(path.join(os.tmpdir(),'hours75-'));
+const socket=net.createServer();await new Promise(resolve=>socket.listen(0,'127.0.0.1',resolve));const port=socket.address().port;socket.close();
+const origin=`http://127.0.0.1:${port}`;
+const child=spawn(process.execPath,['server.mjs'],{cwd:root,env:{...process.env,ADMIN_PASSWORD:'this-is-a-long-test-password',SESSION_SECRET:'a'.repeat(64),PUBLIC_ORIGIN:origin,PORT:String(port),HOST:'127.0.0.1',DATA_DIR:temp},stdio:'ignore'});
+for(let i=0;i<40;i++){try{await fetch(origin);break;}catch{await new Promise(resolve=>setTimeout(resolve,100));}}
+async function call(url,method='GET',body,cookie){const r=await fetch(origin+url,{method,headers:{origin,'content-type':'application/json',...(cookie?{cookie}:{})},body:body?JSON.stringify(body):undefined});return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};}
+test('admin creates accounts, students update only own shifts, reset invalidates sessions',async()=>{
+  assert.equal((await call('/api/me')).status,401);
+  const login=await call('/api/login','POST',{username:'admin',password:'this-is-a-long-test-password'});assert.equal(login.status,200);
+  const admin=login.cookie;assert.equal((await call('/api/students','GET',null,admin)).data.students.length,15);
+  const first='6811011662001',second='6911011662001';
+  const a=await call('/api/accounts','POST',{studentId:first},admin);assert.equal(a.status,200);
+  const b=await call('/api/accounts','POST',{studentId:second},admin);assert.equal(b.status,200);
+  const studentLogin=await call('/api/login','POST',{username:first,password:a.data.temporaryPassword});assert.equal(studentLogin.status,200);
+  let student=studentLogin.cookie;
+  assert.equal((await call('/api/students','GET',null,student)).status,403);
+  const changed=await call('/api/change-password','POST',{currentPassword:a.data.temporaryPassword,newPassword:'student-secret-2026'},student);assert.equal(changed.status,200);student=changed.cookie;
+  assert.equal((await call('/api/students','GET',null,student)).data.students.length,1);
+  const item={studentId:first,workDate:'2026-09-24',startTime:'09:00',endTime:'12:00',breakMinutes:30,note:'จัดเอกสาร'};
+  const saved=await call('/api/shifts','POST',item,student);assert.equal(saved.status,201);
+  assert.equal((await call('/api/shifts','POST',{...item,studentId:second},student)).status,403);
+  assert.equal((await call('/api/shifts','POST',item,student)).status,409);
+  const edited=await call(`/api/shifts?id=${saved.data.id}`,'PUT',{...item,endTime:'13:00'},student);assert.equal(edited.status,200);
+  assert.equal((await call('/api/summary?studentId='+second,'GET',null,student)).status,403);
+  assert.equal((await call('/api/dashboard?month=2026-09','GET',null,student)).status,403);
+  const otherLogin=await call('/api/login','POST',{username:second,password:b.data.temporaryPassword});assert.equal(otherLogin.status,200);
+  const otherChange=await call('/api/change-password','POST',{currentPassword:b.data.temporaryPassword,newPassword:'another-secret-2026'},otherLogin.cookie);assert.equal(otherChange.status,200);
+  const other=otherChange.cookie;
+  assert.equal((await call('/api/shifts?month=2026-09','GET',null,other)).data.shifts.length,0);
+  assert.equal((await call(`/api/shifts?id=${saved.data.id}`,'DELETE',null,other)).status,403);
+  const overview=await call('/api/dashboard?month=2026-09','GET',null,admin);assert.equal(overview.data.students.find(s=>s.id===first).monthMinutes,210);
+  const reset=await call('/api/accounts','POST',{studentId:first},admin);assert.equal(reset.status,200);
+  assert.equal((await call('/api/me','GET',null,student)).status,401);
+  assert.equal((await call(`/api/shifts?id=${saved.data.id}`,'DELETE',null,admin)).status,200);
+});
+after(()=>{child.kill();fs.rmSync(temp,{recursive:true,force:true});});

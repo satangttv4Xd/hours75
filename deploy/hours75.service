@@ -1,0 +1,20 @@
+[Unit]
+Description=Dusit 75-hour work schedule
+After=network.target
+
+[Service]
+Type=simple
+User=hours75
+Group=hours75
+WorkingDirectory=/opt/hours75
+EnvironmentFile=/etc/hours75.env
+ExecStart=/usr/bin/node /opt/hours75/server.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/hours75
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
