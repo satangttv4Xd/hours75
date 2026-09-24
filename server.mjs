@@ -319,7 +319,8 @@ export async function handler(req, res) {
     fs.createReadStream(file).pipe(res);
   } catch (e) {
     console.error(e);
-    fail(res, e.message === 'payload too large' ? 413 : 500, 'ดำเนินการไม่สำเร็จ กรุณาลองใหม่');
+    const msg = e.message === 'payload too large' ? 'ข้อมูลมีขนาดใหญ่เกินไป' : (e.code ? `[DB ${e.code}] ${e.message}` : (e.message || 'ดำเนินการไม่สำเร็จ กรุณาลองใหม่'));
+    fail(res, e.message === 'payload too large' ? 413 : 500, msg);
   }
 }
 
